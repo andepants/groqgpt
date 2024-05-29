@@ -1,18 +1,36 @@
-import { View, Text, Button, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Button, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native'
 import React, { useState } from 'react'
 import { useAuth } from '@clerk/clerk-expo';
 import { defaultStyles } from '@/constants/Styles';
 import { Stack } from 'expo-router';
 import HeaderDropDown from '@/components/HeaderDropDown';
 import MessageInput from '@/components/MessageInput';
+import MessageIdeas from '@/components/MessageIdeas';
+import { Message, Role } from '@/utils/Interfaces';
+import { FlashList } from '@shopify/flash-list'
+import ChatMessage from '@/components/ChatMessage';
 
+const DUMMY_MESSAGES: Message[] = [
+  { content: 'hello, whats good', role: Role.Bot },
+  { content: 'not much, just chillin, thksldjlfkjasldkfjalksjdfalsdfalksdjfl;kajsd;lfkja;lsdjkf  aslkdfjlkj d,l d flkdjfl kjflkajsldkf jalksdjflkasjdf ', role: Role.User },
+  { content: 'what do you want to talk about?', role: Role.Bot },
+]
 const Page = () => {
   const { signOut } = useAuth();
   const [gptVersion, setGptVersion] = useState('3.5');
+  const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
+  const [height, setHeight] = useState(0);
 
   const getCompletion = (message: string) => {
     console.log('get completion for message: ', message);
   }
+
+  const onLayout = (event: any) => {
+    const { height } = event.nativeEvent.layout;
+    console.log('height', height);
+    setHeight(height);
+  }
+
   return (
     <View style={defaultStyles.pageContainer}>
       <Stack.Screen
@@ -29,10 +47,19 @@ const Page = () => {
             />,
         }}
       />
-      <View style={{ flex: 1}}>
-        <Text>Dummy Content</Text>
-        <Button title='sign out' onPress={() => signOut()}></Button>
-        {/* {Array(100).fill(0).map((_, i) => <Text key={i}>{i}</Text>)} */}
+      <View style={{ flex: 1}} onLayout={onLayout}>
+        {messages.length === 0 && (
+          <View style={[styles.logoContainer, { marginTop: height / 2 - 100}]}>
+            <Image source={require('@/assets/images/logo-dark.png')} style={styles.image}/>
+          </View>
+        )}
+        <FlashList
+          data={messages}
+          renderItem={({ item }) => <ChatMessage {...item} />}
+          estimatedItemSize={400}
+          contentContainerStyle={{ paddingTop: 30, paddingBottom: 150 }}
+          keyboardDismissMode="on-drag"
+        />
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -44,10 +71,28 @@ const Page = () => {
           width: '100%',
         }}
       >
+        {messages.length === 0 && <MessageIdeas onSelectCard={getCompletion} />}
         <MessageInput onShouldSendMessage={getCompletion}/>
       </KeyboardAvoidingView>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  logoContainer: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    backgroundColor: '#000',
+    borderRadius: 40,
+  },
+  image: {
+    width: 40,
+    height: 40,
+    resizeMode: 'cover',
+  }
+})
 
 export default Page
