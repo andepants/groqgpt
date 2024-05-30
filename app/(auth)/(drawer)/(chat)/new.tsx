@@ -40,7 +40,10 @@ const Page = () => {
     ]
     const groqResponse = await groq.chat.completions.create({
       messages: inputMessages,
-      model: 'llama3-8b-8192'
+      model: gptVersion === 'llama3-8b' ? 'llama3-8b-8192' :
+       gptVersion === 'llama3-70b' ? 'llama3-70b-8192' :
+       gptVersion === 'mixtral-8x7b' ? 'mixtral-8x7b-32768' :
+       gptVersion === 'gemma-7b' ? 'gemma-7b-it' : 'llama3-8b-8192',
     })
 
     if ( messages.length === 0) {
@@ -71,8 +74,10 @@ const Page = () => {
               onSelect={(key) => { setGptVersion(key) }}
               selected={gptVersion}
               items={[
-                { key: '3.5', title: 'GPT-3.5', icon: 'bolt' },
-                { key: '4', title: 'GPT-4', icon: 'sparkles' },
+                { key: 'llama3-8b', title: 'llama3-8b', icon: 'hare' },
+                { key: 'llama3-70b', title: 'llama3-70b', icon: 'hare.fill' },
+                { key: 'mixtral-8x7b', title: 'mixtral-8x7b', icon: 'bolt' },
+                { key: 'gemma-7b', title: 'gemma-7b', icon: 'icloud' },
               ]}
             />,
         }}
