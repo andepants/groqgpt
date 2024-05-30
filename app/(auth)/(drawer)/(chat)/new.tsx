@@ -1,43 +1,63 @@
 import { View, Text, Button, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-expo';
 import { defaultStyles } from '@/constants/Styles';
 import { Redirect, Stack } from 'expo-router';
 import HeaderDropDown from '@/components/HeaderDropDown';
 import MessageInput from '@/components/MessageInput';
 import MessageIdeas from '@/components/MessageIdeas';
-import { Message, Role } from '@/utils/Interfaces';
 import { FlashList } from '@shopify/flash-list'
 import ChatMessage from '@/components/ChatMessage';
 import { useMMKVString } from 'react-native-mmkv';
 import { Storage } from '@/utils/Storage';
+import Groq from 'groq-sdk';
+import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
 
-const DUMMY_MESSAGES: Message[] = [
-  { content: 'hello, whats good', role: Role.Bot },
-  { content: 'not much, just chillin, thksldjlfkjasldkfjalksjdfalsdfalksdjfl;kajsd;lfkja;lsdjkf  aslkdfjlkj d,l d flkdjfl kjflkajsldkf jalksdjflkasjdf ', role: Role.User },
-  { content: 'what do you want to talk about?', role: Role.Bot },
-]
+const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
+
 const Page = () => {
   const { signOut } = useAuth();
-  const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
+  const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
   const [height, setHeight] = useState(0);
 
   const [key, setKey] = useMMKVString('apiKey', Storage)
   const [organization, setOrganization] = useMMKVString('org', Storage)
   const [gptVersion, setGptVersion] = useMMKVString('gptVersion', Storage)
 
+  const groq = new Groq({
+    apiKey: GROQ_API_KEY,
+  });
+
   if (!key || key === '' || !organization || organization === '') {
     return <Redirect href={"/(auth)/(modal)/settings"} />
   }
 
-
-  const getCompletion = (message: string) => {
+  const getCompletion = async (message: string) => {
     console.log('get completion for message: ', message);
+    const inputMessages: ChatCompletionMessageParam[] = [
+      ...messages,
+      { role: 'user', content: message },
+    ]
+    const groqResponse = await groq.chat.completions.create({
+      messages: inputMessages,
+      model: 'llama3-8b-8192'
+    })
+
+    if ( messages.length === 0) {
+      // create chat later, store to DB
+    }
+
+    setMessages([...inputMessages,
+      { role: 'assistant', content: groqResponse.choices[0]?.message?.content}
+    ])
   }
+
+  // useEffect(() => {
+
+  // }, [groq])
 
   const onLayout = (event: any) => {
     const { height } = event.nativeEvent.layout;
-    console.log('height', height);
     setHeight(height);
   }
 
@@ -67,7 +87,7 @@ const Page = () => {
           data={messages}
           renderItem={({ item }) => <ChatMessage {...item} />}
           estimatedItemSize={400}
-          contentContainerStyle={{ paddingTop: 30, paddingBottom: 150 }}
+          contentContainerStyle={{ paddingTop: 30, paddingBottom: 150, paddingRight: 40 }}
           keyboardDismissMode="on-drag"
         />
       </View>

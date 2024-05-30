@@ -1,13 +1,7 @@
-export enum Role {
-  User = 0,
-  Bot = 1,
-}
-
 export interface Message {
-  role: Role;
-  content: string;
-  imageUrl?: string;
-  prompt?: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string | null;
+  name?: string;
 }
 
 export interface Chat {

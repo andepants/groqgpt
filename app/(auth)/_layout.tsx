@@ -16,7 +16,7 @@ const Layout = () => {
           presentation: 'modal',
           headerShadowVisible: false,
           headerStyle: { backgroundColor: Colors.selected },
-          headerRight: () => (
+          headerLeft: () => (
             <>
               {router.canGoBack() &&
                 <TouchableOpacity

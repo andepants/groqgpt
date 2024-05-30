@@ -1,11 +1,12 @@
+// @ts-nocheck
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { Message, Role } from '@/utils/Interfaces'
+import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
 
-const ChatMessage = ({ content, role, imageUrl, prompt} : Message) => {
+const ChatMessage = ({ content, role } : ChatCompletionMessageParam) => {
   return (
     <View style={styles.row}>
-      {role === Role.Bot ? (
+      {role === 'assistant' ? (
         <View style={[styles.item]}>
           <Image source={require('@/assets/images/logo-dark.png')} style={styles.btnImage} />
         </View>
