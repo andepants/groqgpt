@@ -2,13 +2,15 @@ import { View, Text, Button, Platform, KeyboardAvoidingView, StyleSheet, Image }
 import React, { useState } from 'react'
 import { useAuth } from '@clerk/clerk-expo';
 import { defaultStyles } from '@/constants/Styles';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import HeaderDropDown from '@/components/HeaderDropDown';
 import MessageInput from '@/components/MessageInput';
 import MessageIdeas from '@/components/MessageIdeas';
 import { Message, Role } from '@/utils/Interfaces';
 import { FlashList } from '@shopify/flash-list'
 import ChatMessage from '@/components/ChatMessage';
+import { useMMKVString } from 'react-native-mmkv';
+import { Storage } from '@/utils/Storage';
 
 const DUMMY_MESSAGES: Message[] = [
   { content: 'hello, whats good', role: Role.Bot },
@@ -17,9 +19,17 @@ const DUMMY_MESSAGES: Message[] = [
 ]
 const Page = () => {
   const { signOut } = useAuth();
-  const [gptVersion, setGptVersion] = useState('3.5');
   const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
   const [height, setHeight] = useState(0);
+
+  const [key, setKey] = useMMKVString('apiKey', Storage)
+  const [organization, setOrganization] = useMMKVString('org', Storage)
+  const [gptVersion, setGptVersion] = useMMKVString('gptVersion', Storage)
+
+  if (!key || key === '' || !organization || organization === '') {
+    return <Redirect href={"/(auth)/(modal)/settings"} />
+  }
+
 
   const getCompletion = (message: string) => {
     console.log('get completion for message: ', message);
