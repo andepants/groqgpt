@@ -1,9 +1,11 @@
 // @ts-nocheck
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
+import { Message } from '@/utils/Interfaces'
+import Colors from '@/constants/Colors'
 
-const ChatMessage = ({ content, role } : ChatCompletionMessageParam) => {
+const ChatMessage = ({ content, role, loading, imageUrl } : ChatCompletionMessageParam | Message) => {
   return (
     <View style={styles.row}>
       {role === 'assistant' ? (
@@ -14,7 +16,19 @@ const ChatMessage = ({ content, role } : ChatCompletionMessageParam) => {
       (
         <Image source={require('@/assets/images/avatar.png')} style={styles.avatar}/>
       )}
-      <Text style={styles.content}>{content}</Text>
+      {loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator color={Colors.primary} size="small"/>
+        </View>
+      ) : (
+        <>
+          {content === '' && imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.previewImage} />
+          ) : (
+            <Text style={styles.content}>{content}</Text>
+          )}
+        </>
+      )}
     </View>
   )
 }
@@ -45,6 +59,16 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 4,
+  },
+  loading: {
+    justifyContent: 'center',
+    height: 26,
+    margin: 14,
+  },
+  previewImage: {
+    width: 240,
+    height: 240,
+    borderRadius: 10,
   }
 })
 
