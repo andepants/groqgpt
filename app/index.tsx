@@ -3,7 +3,7 @@ import AnimatedIntro from "@/components/AnimatedIntro";
 import BottomLoginSheet from "@/components/BottomLoginSheet";
 
 export default function Index() {
-  return (
+return (
     <View
       style={{
         flex: 1,

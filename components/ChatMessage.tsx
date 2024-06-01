@@ -6,8 +6,9 @@ import { Message } from '@/utils/Interfaces'
 import Colors from '@/constants/Colors'
 import * as ContextMenu from 'zeego/context-menu';
 import { copyImageToClipboard, downloadAndSaveImage, shareImage } from '@/utils/Image'
+import { Link } from 'expo-router';
 
-const ChatMessage = ({ content, role, loading, imageUrl } : ChatCompletionMessageParam | Message) => {
+const ChatMessage = ({ content, role, loading, imageUrl, prompt } : ChatCompletionMessageParam | Message) => {
   const contextItems = [
     { title: 'Copy', systemIcon: 'doc.on.doc', action: () => copyImageToClipboard(imageUrl!)},
     { title: 'Save to Photos', systemIcon: 'arrow.down.to.line', action: () => downloadAndSaveImage(imageUrl!) },
@@ -32,9 +33,11 @@ const ChatMessage = ({ content, role, loading, imageUrl } : ChatCompletionMessag
           {content === '' && imageUrl ? (
             <ContextMenu.Root>
               <ContextMenu.Trigger>
-                <Pressable>
-                  <Image source={{ uri: imageUrl }} style={styles.previewImage} />
-                </Pressable>
+                <Link href={`/(auth)/(modal)/${encodeURIComponent(imageUrl)}?prompt=${encodeURIComponent(prompt!)}`} asChild>
+                  <Pressable>
+                    <Image source={{ uri: imageUrl }} style={styles.previewImage} />
+                  </Pressable>
+                </Link>
               </ContextMenu.Trigger>
               <ContextMenu.Content>
                 {contextItems.map((item, index) => (
