@@ -49,7 +49,7 @@ const Page = () => {
             <DropDownMenu
               items={[
                 { key: '1', title: 'View prompt', icon: 'info.circle' },
-                { key: '2', title: 'Learn more', icon: 'questionmark.circle' },
+                // { key: '2', title: 'Learn more', icon: 'questionmark.circle' },
               ]}
               onSelect={handlePresentModalPress}
             />

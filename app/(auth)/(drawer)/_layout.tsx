@@ -109,7 +109,7 @@ const Layout = () => {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name='explore'
         options={{
           title: 'Explore GPTs',
@@ -119,7 +119,7 @@ const Layout = () => {
             </View>
           ),
         }}
-      />
+      /> */}
     </Drawer>
   )
 }
