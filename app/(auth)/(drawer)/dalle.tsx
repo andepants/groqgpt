@@ -26,7 +26,7 @@ const Page = () => {
   const [height, setHeight] = useState(0);
   const [key, setKey] = useMMKVString('apikey', Storage);
   const [organization, setOrganization] = useMMKVString('org', Storage);
-  const [messages, setMessages] = useState<Message[]>(dummyMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [working, setWorking] = useState(false);
 
   if (!key || key === '' || !organization || organization === '') {

@@ -72,14 +72,14 @@ const Page = () => {
           style={styles.blurView}
         >
           <View style={styles.row}>
-            <TouchableOpacity style={{ alignItems: 'center' }}>
+            {/* <TouchableOpacity style={{ alignItems: 'center' }}>
               <Ionicons name="chatbubble-ellipses-outline" size={24} color="white" />
               <Text style={styles.btnText}>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ alignItems: 'center' }}>
               <Ionicons name="brush-outline" size={24} color="white" />
               <Text style={styles.btnText}>Select</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={{ alignItems: 'center' }}
               onPress={() => downloadAndSaveImage(url)}>
