@@ -12,6 +12,8 @@ import { useMMKVString } from 'react-native-mmkv';
 import { Storage } from '@/utils/Storage';
 import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
+import { useSQLiteContext } from 'expo-sqlite';
+import { addChat, addMessage } from '@/utils/Database';
 
 const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 
@@ -24,6 +26,9 @@ const Page = () => {
   const [organization, setOrganization] = useMMKVString('org', Storage)
   const [gptVersion, setGptVersion] = useMMKVString('gptVersion', Storage)
 
+  const db = useSQLiteContext();
+  const [chatId, setChatId] = useState<string | null>('');
+
   const groq = new Groq({
     apiKey: GROQ_API_KEY,
   });
@@ -33,7 +38,16 @@ const Page = () => {
   }
 
   const getCompletion = async (message: string) => {
-    console.log('get completion for message: ', message);
+    // console.log('get completion for message: ', message);
+
+    if ( messages.length === 0) {
+      const result = await addChat(db, message);
+      const chatID = result.lastInsertRowId;
+      setChatId(chatID.toString());
+      // console.log('chatID: ', chatID);
+      addMessage(db, chatID, { content: message, role: 'user' })
+    }
+
     const inputMessages: ChatCompletionMessageParam[] = [
       ...messages,
       { role: 'user', content: message },
@@ -41,23 +55,18 @@ const Page = () => {
     const groqResponse = await groq.chat.completions.create({
       messages: inputMessages,
       model: gptVersion === 'llama3-8b' ? 'llama3-8b-8192' :
-       gptVersion === 'llama3-70b' ? 'llama3-70b-8192' :
-       gptVersion === 'mixtral-8x7b' ? 'mixtral-8x7b-32768' :
-       gptVersion === 'gemma-7b' ? 'gemma-7b-it' : 'llama3-8b-8192',
+      gptVersion === 'llama3-70b' ? 'llama3-70b-8192' :
+      gptVersion === 'mixtral-8x7b' ? 'mixtral-8x7b-32768' :
+      gptVersion === 'gemma-7b' ? 'gemma-7b-it' : 'llama3-8b-8192',
     })
-
-    if ( messages.length === 0) {
-      // create chat later, store to DB
-    }
 
     setMessages([...inputMessages,
       { role: 'assistant', content: groqResponse.choices[0]?.message?.content}
     ])
+
+    addMessage(db, Number(chatId), { content: groqResponse.choices[0]?.message?.content, role: 'assistant' })
+
   }
-
-  // useEffect(() => {
-
-  // }, [groq])
 
   const onLayout = (event: any) => {
     const { height } = event.nativeEvent.layout;
