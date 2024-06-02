@@ -1,17 +1,17 @@
-import { Message, Role } from '@/utils/Interfaces';
+import { Chat, Message } from '@/utils/Interfaces';
 import { type SQLiteDatabase } from 'expo-sqlite/next';
 import * as FileSystem from 'expo-file-system';
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   // Log DB path for debugging
-  console.log(FileSystem.documentDirectory);
+  // console.log(FileSystem.documentDirectory);
   const DATABASE_VERSION = 1;
   let result = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
 
   let currentDbVersion = result?.user_version ?? 0;
 
   if (currentDbVersion >= DATABASE_VERSION) {
-    console.log("ALREADY ON LATEST DB VERSION")
+    // console.log("ALREADY ON LATEST DB VERSION")
     return;
   }
   if (currentDbVersion === 0) {
@@ -32,7 +32,7 @@ CREATE TABLE messages (
   FOREIGN KEY (chat_id) REFERENCES chats (id) ON DELETE CASCADE
 );
 `);
-  console.log('result', result);
+  // console.log('result', result);
 
     currentDbVersion = 1;
   }
@@ -48,7 +48,7 @@ export const addChat = async (db: SQLiteDatabase, title: string) => {
 };
 
 export const getChats = async (db: SQLiteDatabase) => {
-  return await db.getAllAsync('SELECT * FROM chats');
+  return await db.getAllAsync<Chat>('SELECT * FROM chats');
 };
 
 export const getMessages = async (db: SQLiteDatabase, chatId: number): Promise<Message[]> => {

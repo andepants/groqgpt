@@ -14,7 +14,7 @@ const Layout = () => {
     <SQLiteProvider
       databaseName='chats.db'
       onInit={migrateDbIfNeeded}
-    >
+      >
       <Stack>
         <Stack.Screen name='(drawer)' options={{ headerShown: false }} />
         <Stack.Screen
@@ -51,9 +51,9 @@ const Layout = () => {
               <>
                 {router.canGoBack() &&
                   <TouchableOpacity
-                    onPress={() => router.back()}
-                    style={{ borderRadius: 20, padding: 4 }}
-                    >
+                  onPress={() => router.back()}
+                  style={{ borderRadius: 20, padding: 4 }}
+                  >
                     <Ionicons name="close-outline" size={24} color={'#fff'}/>
                   </TouchableOpacity>
                 }
