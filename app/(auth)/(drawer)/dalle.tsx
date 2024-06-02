@@ -29,9 +29,9 @@ const Page = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [working, setWorking] = useState(false);
 
-  if (!key || key === '' || !organization || organization === '') {
-    return <Redirect href={'/(auth)/(modal)/settings'} />;
-  }
+  // if (!key || key === '' || !organization || organization === '') {
+  //   return <Redirect href={'/(auth)/(modal)/settings'} />;
+  // }
 
   const openAI = useMemo(
     () =>

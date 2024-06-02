@@ -26,9 +26,9 @@ const Layout = () => {
             headerStyle: { backgroundColor: Colors.selected },
             headerLeft: () => (
               <>
-                {router.canGoBack() &&
+                {true &&
                   <TouchableOpacity
-                    onPress={() => router.back()}
+                    onPress={() => router.push('/(auth)/(drawer)/new')}
                     style={{ backgroundColor: Colors.greyLight, borderRadius: 20, padding: 6 }}
                     >
                     <Ionicons name="close-outline" size={24} color={Colors.grey}/>

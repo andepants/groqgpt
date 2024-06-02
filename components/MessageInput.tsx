@@ -92,7 +92,7 @@ const MessageInput = ({ onShouldSendMessage } : MessageInputProps) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity>
-            <FontAwesome5 name='headphones' size={24} color={Colors.grey} />
+            <FontAwesome5 name='arrow-circle-up' size={24} color={Colors.grey} />
           </TouchableOpacity>
         )}
       </View>

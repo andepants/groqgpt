@@ -19,6 +19,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
 PRAGMA journal_mode = 'wal';
 CREATE TABLE chats (
   id INTEGER PRIMARY KEY NOT NULL,
+  user_id STRING NOT NULL,
   title TEXT NOT NULL
 );
 
@@ -43,12 +44,12 @@ CREATE TABLE messages (
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
 }
 
-export const addChat = async (db: SQLiteDatabase, title: string) => {
-  return await db.runAsync('INSERT INTO chats (title) VALUES (?)', title);
+export const addChat = async (db: SQLiteDatabase, title: string, user_id: string) => {
+  return await db.runAsync('INSERT INTO chats (title, user_id) VALUES (?, ?)', title, user_id);
 };
 
-export const getChats = async (db: SQLiteDatabase) => {
-  return await db.getAllAsync<Chat>('SELECT * FROM chats');
+export const getChats = async (db: SQLiteDatabase, user_id: string) => {
+  return await db.getAllAsync<Chat>('SELECT * FROM chats WHERE user_id = ?', [user_id]);
 };
 
 export const getMessages = async (db: SQLiteDatabase, chatId: number): Promise<Message[]> => {

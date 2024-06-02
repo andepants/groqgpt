@@ -14,12 +14,11 @@ import Groq from 'groq-sdk';
 import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
 import { useSQLiteContext } from 'expo-sqlite';
 import { addChat, addMessage, getMessages } from '@/utils/Database';
-import { Message } from '@/utils/Interfaces';
 
 const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 
 const ChatPage = () => {
-  const { signOut } = useAuth();
+  const { signOut, userId } = useAuth();
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
   const [height, setHeight] = useState(0);
 
@@ -54,7 +53,7 @@ const ChatPage = () => {
     let chatID = chatId;
 
     if ( messages.length === 0) {
-      const result = await addChat(db, message);
+      const result = await addChat(db, message, userId || 'foo');
       chatID = result.lastInsertRowId.toString();
       setChatId(chatID);
       // console.log('chatID: ', chatID);

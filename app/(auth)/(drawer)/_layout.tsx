@@ -24,6 +24,7 @@ import { Chat } from '@/utils/Interfaces';
 import * as ContextMenu from 'zeego/context-menu';
 // import { useRevenueCat } from '@/providers/RevenueCat';
 import { Keyboard } from 'react-native';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 
 export const CustomDrawerContent = (props: any) => {
   const { bottom, top } = useSafeAreaInsets();
@@ -31,6 +32,8 @@ export const CustomDrawerContent = (props: any) => {
   const isDrawerOpen = useDrawerStatus() === 'open';
   const [history, setHistory] = useState<Chat[]>([]);
   const router = useRouter();
+  const { userId } = useAuth();
+  const { user } = useUser();
 
   useEffect(() => {
     loadChats();
@@ -39,7 +42,8 @@ export const CustomDrawerContent = (props: any) => {
 
   const loadChats = async () => {
     // Load chats from SQLite
-    const result = (await getChats(db)) as Chat[];
+    const result = (await getChats(db, userId || 'foo')) as Chat[];
+    // console.log("result of getChats", result);
     setHistory(result);
   };
 
@@ -140,7 +144,10 @@ export const CustomDrawerContent = (props: any) => {
               source={require('@/assets/images/avatar.png')}
               style={styles.avatar}
             />
-            <Text style={styles.userName}>Big Daddy</Text>
+            {user?.emailAddresses[0]?.emailAddress
+              ? <Text style={styles.userName}>{user?.emailAddresses[0]?.emailAddress}</Text>
+              : <Text style={styles.userName}>Anonymous</Text>
+            }
             <Ionicons name="ellipsis-horizontal" size={24} color={Colors.greyLight} />
           </TouchableOpacity>
         </Link>
@@ -296,8 +303,8 @@ const styles = StyleSheet.create({
     height: 30,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 10,
   },
   userName: {

@@ -29,7 +29,13 @@ const Page = () => {
 
   return (
     <View style={styles.container}>
-      {key && key !== '' && (
+      <TouchableOpacity
+        style={[defaultStyles.btn, { backgroundColor: Colors.primary }]}
+        onPress={() => signOut()}
+      >
+        <Text style={styles.buttonText}>Sign Out</Text>
+      </TouchableOpacity>
+      {/* {key && key !== '' && (
         <>
           <Text style={styles.label}>You are all set!</Text>
           <TouchableOpacity
@@ -67,7 +73,7 @@ const Page = () => {
           </TouchableOpacity>
         </>
       )}
-      <Button title="Sign Out" onPress={() => signOut()} color={Colors.grey} />
+      <Button title="Sign Out" onPress={() => signOut()} color={Colors.grey} /> */}
     </View>
   );
 };
