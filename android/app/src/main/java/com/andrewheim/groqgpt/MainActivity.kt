@@ -1,4 +1,4 @@
-package com.andrewheim.groqgpt
+package com.groqgpt
 
 import android.os.Build
 import android.os.Bundle

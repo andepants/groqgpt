@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>myapp</string>
-          <string>com.andrewheim.groqgpt</string>
+          <string>com.groqgpt</string>
         </array>
       </dict>
       <dict>

@@ -27,7 +27,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.andrewheim.groqgpt"/>
+        <data android:scheme="com.groqgpt"/>
         <data android:scheme="exp+groqgpt"/>
       </intent-filter>
     </activity>

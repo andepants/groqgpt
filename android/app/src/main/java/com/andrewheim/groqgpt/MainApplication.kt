@@ -1,4 +1,4 @@
-package com.andrewheim.groqgpt
+package com.groqgpt
 
 import android.app.Application
 import android.content.res.Configuration
