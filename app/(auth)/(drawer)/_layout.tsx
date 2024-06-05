@@ -25,6 +25,7 @@ import * as ContextMenu from 'zeego/context-menu';
 // import { useRevenueCat } from '@/providers/RevenueCat';
 import { Keyboard } from 'react-native';
 import { useAuth, useUser } from '@clerk/clerk-expo';
+import { useRevenueCat } from '@/providers/RevenueCatProvider';
 
 export const CustomDrawerContent = (props: any) => {
   const { bottom, top } = useSafeAreaInsets();
@@ -159,7 +160,7 @@ export const CustomDrawerContent = (props: any) => {
 const Layout = () => {
   const navigation = useNavigation();
   const dimensions = useWindowDimensions();
-  // const { user } = useRevenueCat();
+  const { user } = useRevenueCat();
   const router = useRouter();
 
   return (
@@ -242,7 +243,11 @@ const Layout = () => {
         listeners={{
           drawerItemPress: (e) => {
             e.preventDefault();
-            router.navigate('/(auth)/dalle');
+            if ( user.dalle ) {
+              router.navigate('/(auth)/(drawer)/dalle');
+            } else {
+              router.navigate('/(auth)/(modal)/purchase');
+            }
           },
         }}
       />
