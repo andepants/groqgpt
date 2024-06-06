@@ -54,7 +54,7 @@ const Page = () => {
 
     const result = await openAI.images.generate({
       prompt: text,
-      model: 'dall-e-2',
+      model: 'dall-e-3',
     });
     if (result.data && result.data.length > 0) {
       const imageUrl = result.data[0].url;

@@ -28,7 +28,7 @@ export const useRevenueCat = () => {
 
 // Provide RevenueCat functions to our app
 export const RevenueCatProvider = ({ children }: any) => {
-  const [user, setUser] = useState<UserState>({ dalle: false });
+  const [user, setUser] = useState<UserState>({ dalle: true });
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [isReady, setIsReady] = useState(false);
 
