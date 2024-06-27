@@ -190,7 +190,7 @@ const Layout = () => {
         name="(chat)/new"
         getId={() => Math.random().toString()}
         options={{
-          title: 'GroqGPT',
+          title: 'GroqTalk',
           drawerIcon: () => (
             <View style={[styles.item, { backgroundColor: '#000' }]}>
               <Image source={require('@/assets/images/logo-dark.png')} style={styles.btnImage} />

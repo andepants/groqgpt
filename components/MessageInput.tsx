@@ -59,11 +59,11 @@ const MessageInput = ({ onShouldSendMessage } : MessageInputProps) => {
   return (
     <BlurView intensity={80} tint="extraLight" style={{ paddingBottom: bottom, paddingTop: 10 }} >
       <View style={styles.row}>
-        <ATouchableOpacity onPress={expandItems} style={[styles.roundBtn, expandButtonStyle]}>
+        {/* <ATouchableOpacity onPress={expandItems} style={[styles.roundBtn, expandButtonStyle]}>
           <Ionicons name='add' size={24} color={Colors.grey} />
-        </ATouchableOpacity>
+        </ATouchableOpacity> */}
 
-        <Animated.View style={[styles.buttonView, buttonViewStyle]}>
+        {/* <Animated.View style={[styles.buttonView, buttonViewStyle]}>
           <TouchableOpacity onPress={() => ImagePicker.launchCameraAsync()}>
             <Ionicons name='camera-outline' size={24} color={Colors.grey} />
           </TouchableOpacity>
@@ -75,7 +75,7 @@ const MessageInput = ({ onShouldSendMessage } : MessageInputProps) => {
           <TouchableOpacity onPress={() => DocumentPicker.getDocumentAsync()}>
             <Ionicons name='folder-outline' size={24} color={Colors.grey} />
           </TouchableOpacity>
-        </Animated.View>
+        </Animated.View> */}
 
         <TextInput
           autoFocus

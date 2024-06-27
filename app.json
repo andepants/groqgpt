@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.groqgpt",
-      "buildNumber": "4",
+      "buildNumber": "6",
       "config": {
         "usesNonExemptEncryption": false
       }

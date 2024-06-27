@@ -97,7 +97,7 @@ const ChatPage = () => {
         options={{
           headerTitle: () =>
             <HeaderDropDown
-              title="groqGPT"
+              title="GroqTalk"
               onSelect={(key) => { setGptVersion(key) }}
               selected={gptVersion}
               items={[

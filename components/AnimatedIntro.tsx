@@ -20,22 +20,22 @@ const content = [
     fontColor: Colors.pink,
   },
   {
-    title: "Let's brainstorm.",
+    title: "Let's eat some cake.",
     bg: Colors.brown,
     fontColor: Colors.sky,
   },
   {
-    title: "Let's discover.",
+    title: "Let's get this bread.",
     bg: Colors.orange,
     fontColor: Colors.blue,
   },
   {
-    title: "Let's go.",
+    title: "Leggo my eggo.",
     bg: Colors.teal,
     fontColor: Colors.yellow,
   },
   {
-    title: 'GroqGPT.',
+    title: 'Let’s ride or die.',
     bg: Colors.green,
     fontColor: Colors.pink,
   },
